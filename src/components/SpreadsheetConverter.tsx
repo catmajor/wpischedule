@@ -244,6 +244,11 @@ export default function SpreadsheetConverter() {
             
             <p className="mb-2 font-bold">Some notes:</p>
             <div className="bg-white border border-gray-400 p-2 text-xs">
+              <p className="mb-1">This does not take wellness days/schedule changes into account from the overall year calendar</p>
+              <p className="mb-1">You should star the github repo&nbsp;
+                <a href="https://github.com/catmajor/wpischedule">
+                 <strong>https://github.com/catmajor/wpischedule</strong>
+              </a>!</p>
               <p className="mb-1">This works for my calendar as of 10.24.2025</p>
               <ul className="list-disc ml-5 space-y-1 mb-2">
                 <li>If you are using this far in the future, please make a test caldendar in outlook first</li>
