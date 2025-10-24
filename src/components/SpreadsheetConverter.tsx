@@ -264,25 +264,80 @@ export default function SpreadsheetConverter() {
         </div>
 
         {/* Status bar */}
-        <div style={{
-          marginTop: '16px',
-          padding: '3px 6px',
-          background: '#ece9d8',
-          border: '1px solid',
-          borderColor: '#808080 #ffffff #ffffff #808080',
-          fontSize: '10px',
-          color: '#000',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          boxShadow: 'inset 1px 1px 0 rgba(0,0,0,0.1)'
-        }}>
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-            <circle cx="8" cy="8" r="7" fill="#4caf50"/>
-            <path d="M8 4v5l3 2" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-          </svg>
-          <span>Ready</span>
-        </div>
+        <>
+        {status.type === 'loading' ?  
+          <div style={{
+            marginTop: '8px',
+            padding: '3px 6px',
+            background: '#fff7e6',
+            border: '1px solid',
+            borderColor: '#b8860b #ffffff #ffffff #b8860b',
+            fontSize: '10px',
+            color: '#4a2b00',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            boxShadow: 'inset 1px 1px 0 rgba(0,0,0,0.04)'
+          }}>
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden>
+              <g>
+                <circle cx="8" cy="8" r="6" stroke="#ff9800" strokeWidth="1.6" fill="transparent"/>
+                <g transform="translate(8 8)">
+                  <g>
+                    <circle cx="0" cy="-4" r="1.2" fill="#ff9800"/>
+                  </g>
+                  <g>
+                    <path d="M0 -2 v3" stroke="#ff9800" strokeWidth="1.2" strokeLinecap="round"/>
+                  </g>
+                </g>
+                <animateTransform attributeName="transform" type="rotate" from="0 8 8" to="360 8 8" dur="1s" repeatCount="indefinite"/>
+              </g>
+            </svg>
+            <span>In Progress</span>
+          </div>
+          : status.type === 'error' ?
+          <div style={{
+            marginTop: '8px',
+            padding: '3px 6px',
+            background: '#fdecea',
+            border: '1px solid',
+            borderColor: '#c62828 #ffffff #ffffff #c62828',
+            fontSize: '10px',
+            color: '#5a1a1a',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            boxShadow: 'inset 1px 1px 0 rgba(0,0,0,0.04)'
+          }}>
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden>
+              <circle cx="8" cy="8" r="7" fill="#f44336"/>
+              <path d="M8 5.5v3" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+              <circle cx="8" cy="11.2" r="0.6" fill="white"/>
+            </svg>
+            <span>Error</span>
+          </div>
+          :
+          <div style={{
+            marginTop: '16px',
+            padding: '3px 6px',
+            background: '#ece9d8',
+            border: '1px solid',
+            borderColor: '#808080 #ffffff #ffffff #808080',
+            fontSize: '10px',
+            color: '#000',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            boxShadow: 'inset 1px 1px 0 rgba(0,0,0,0.1)'
+          }}>
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="7" fill="#4caf50"/>
+              <path d="M8 4v5l3 2" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+            <span>Ready</span>
+          </div>
+        }
+        </>
       </div>
     </div>
   );
