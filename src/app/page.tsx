@@ -17,6 +17,7 @@ export default function Home() {
         </svg>
         <span className="xp-attribution-text">
           <span className="xp-attribution-label">Made by</span>
+          <span className="xp-attribution-name">Nikita Ostapenko</span>
           <span className="xp-attribution-username">@catmajor</span>
         </span>
       </a>

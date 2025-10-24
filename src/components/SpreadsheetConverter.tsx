@@ -12,6 +12,7 @@ export default function SpreadsheetConverter() {
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<ConversionStatus>({ type: 'idle' });
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [icsContent, setIcsContent] = useState<any>(null);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -46,20 +47,27 @@ export default function SpreadsheetConverter() {
       const icsContent = generateICS(jsonData);
 
       const blob = new Blob([icsContent], { type: 'text/calendar' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${file.name.replace(/\.[^/.]+$/, '')}_calendar.ics`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
-      setStatus({ type: 'success', message: 'Calendar file downloaded successfully!' });
+      setIcsContent(blob);
+         setStatus({ type: 'success', message: 'Calendar file downloaded successfully!' });
     } catch (error) {
       console.error('Conversion error:', error);
       setStatus({ type: 'error', message: 'Failed to convert file. Please check the format.' });
     }
+  };
+
+  const downloadICS = () => {
+    if (!icsContent || !file) return;
+    const url = URL.createObjectURL(icsContent);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${file.name.replace(/\.[^/.]+$/, '')}_calendar.ics`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+
   };
 
   const generateICS = (data: any[]): string => {
@@ -257,8 +265,8 @@ export default function SpreadsheetConverter() {
                 <p className="text-xs" style={{ lineHeight: '1.5' }}>
                   {status.message}
                 </p>
-                <button onClick={() => setStatus({ type: 'idle' })} className="xp-button mt-3">
-                  OK
+                <button onClick={() => {downloadICS();setStatus({ type: 'idle' })}} className="xp-button mt-3">
+                  Download File
                 </button>
               </div>
             </div>
@@ -295,21 +303,27 @@ export default function SpreadsheetConverter() {
           <div className="text-xs" style={{ lineHeight: '1.6', color: '#000' }}>
             <p className="mb-2 font-bold">How to use this converter:</p>
             <ol className="list-decimal ml-5 space-y-1 mb-3">
-              <li>Click <strong>Browse...</strong> to select your Excel file</li>
-              <li>Click <strong>Convert to Calendar</strong> to process the file</li>
-              <li>The .ics file will download automatically</li>
-              <li>Import the .ics file into your calendar application</li>
+              <li>Go to <strong>Workday</strong> &gt; <strong>Academics</strong> &gt; <strong>View My Courses</strong></li>
+              <li>Click the download excel icon
+                <svg width="24" height="24" className="wd-icon-excel wd-icon" role="presentation" viewBox="0 0 24 24"><g className="wd-icon-container"><g><path d="M22 2.494A.5.5 0 0 0 21.504 2H6.496A.5.5 0 0 0 6 2.494V6.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V4h12v16H8v-2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v4.006c0 .27.222.494.496.494h15.008c.27 0 .496-.221.496-.494z" className="wd-icon-fill"></path><path d="M11 7.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5z" className="wd-icon-fill"></path><path d="M11 11.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5z" className="wd-icon-fill"></path><path d="M11 15.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5z" className="wd-icon-fill"></path><path d="M15 7.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5z" className="wd-icon-fill"></path><path d="M15 11.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5z" className="wd-icon-fill"></path><path d="M15 15.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5z" className="wd-icon-fill"></path><path d="m6.604 8.14-1.239 2.519-1.239-2.52A.25.25 0 0 0 3.902 8H2.288a.25.25 0 0 0-.218.373l2.02 3.593-2.078 3.659a.25.25 0 0 0 .218.373h1.634a.25.25 0 0 0 .224-.139l1.277-2.57 1.277 2.57a.25.25 0 0 0 .224.139h1.64a.25.25 0 0 0 .217-.374l-2.084-3.658 2.026-3.593A.25.25 0 0 0 8.447 8H6.828a.25.25 0 0 0-.224.14Z" className="wd-icon-fill"></path></g></g></svg>
+              to download the file</li>
+              <li>Click the <strong>Browse</strong> button here and select that file</li>
+              <li>Download the file once it is ready</li>
+              <li>In outlook go to the calendar tab and click <strong>Add Calendar</strong> &gt; <strong>Upload From file</strong> &gt; <strong>Browse</strong> and select the generated ics file</li>
+              <li>Enjoy!</li>
             </ol>
             
-            <p className="mb-2 font-bold">Expected Excel format:</p>
+            <p className="mb-2 font-bold">Some notes:</p>
             <div className="bg-white border border-gray-400 p-2 text-xs">
-              <p className="mb-1">Your spreadsheet should contain these columns:</p>
+              <p className="mb-1">This works for my calendar as of 10.24.2025</p>
+              <ul className="list-disc ml-5 space-y-1 mb-2">
+                <li>If you are using this far in the future, please make a test caldendar in outlook first</li>
+                <li>If there is an issue feel free to open a pull request</li>
+              </ul>
+              <p className="mb-1">The codebase is cooked</p>
               <ul className="list-disc ml-5 space-y-1">
-                <li><strong>title</strong> or <strong>event</strong> - Event name</li>
-                <li><strong>start</strong> or <strong>date</strong> - Start date/time</li>
-                <li><strong>end</strong> - End date/time (optional)</li>
-                <li><strong>description</strong> - Event details (optional)</li>
-                <li><strong>location</strong> - Event location (optional)</li>
+                <li>I vibecoded most of the front end and I don't get paid to check for validity</li>
+                <li>If you want to fix something feel free to do it and open a pull request yourself and i'll look at it at some point</li>   
               </ul>
             </div>
           </div>
