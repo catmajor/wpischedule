@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import * as XLSX from 'xlsx';
+import createICSFromExcel from "@/lib/generate-ics"
 
 interface ConversionStatus {
   type: 'idle' | 'loading' | 'success' | 'error';
@@ -44,7 +45,7 @@ export default function SpreadsheetConverter() {
       const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
       const jsonData = XLSX.utils.sheet_to_json(firstSheet);
 
-      const icsContent = generateICS(jsonData);
+      const icsContent = createICSFromExcel(workbook);
 
       const blob = new Blob([icsContent], { type: 'text/calendar' });
       setIcsContent(blob);
