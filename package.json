@@ -6,7 +6,9 @@
         "dev": "next dev --turbopack",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "next lint",
+        "export": "next export",
+        "deploy": "next build && next export && gh-pages -d out"
     },
     "dependencies": {
         "@babel/parser": "^7.28.4",
@@ -65,6 +67,7 @@
         "embla-carousel-react": "^8.6.0",
         "estree-walker": "2.0.2",
         "framer-motion": "^12.23.22",
+        "gh-pages": "^6.3.0",
         "input-otp": "^1.4.2",
         "lucide-react": "^0.545.0",
         "mini-svg-data-uri": "^1.4.4",
