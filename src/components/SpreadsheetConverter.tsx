@@ -251,7 +251,7 @@ export default function SpreadsheetConverter() {
               </a>!</p>
               <p className="mb-1">This works for my calendar as of 10.24.2025</p>
               <ul className="list-disc ml-5 space-y-1 mb-2">
-                <li>If you are using this far in the future, please make a test caldendar in outlook first</li>
+                <li>If you are using this far in the future, please make a test calendar in outlook first</li>
                 <li>If there is an issue feel free to open a pull request</li>
               </ul>
               <p className="mb-1">The codebase is cooked</p>
