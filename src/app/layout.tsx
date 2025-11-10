@@ -7,7 +7,7 @@ import Script from "next/script";
 export const metadata: Metadata = {
   title: "WPI Workday Schedule to ICS",
   description: "An app to convert your workday registered courses to a functional ics file for workday!",
-  icons: {icon: "/file.svg"}
+  icons: {icon: "./wpischedule/file.svg"}
 };
 
 export default function RootLayout({
