@@ -36,8 +36,9 @@ export default function createICSFromExcel(json) {
     // Epoch: 1899-12-30 is serial 0 in this conversion which matches most Excel exports.
     // We'll treat serial as whole days (no fractional times in the provided data).
     const msPerDay = 24 * 60 * 60 * 1000;
+    const estOffset = 5 * 60 * 60 * 1000; // EST offset in ms
     const epoch = Date.UTC(1899, 11, 30); // 1899-12-30
-    return new Date(epoch + Math.round(serial) * msPerDay);
+    return new Date(epoch + Math.round(serial) * msPerDay + estOffset);
   }
 
   function pad2(n) { return n.toString().padStart(2,'0'); }
@@ -201,8 +202,6 @@ export default function createICSFromExcel(json) {
 
       // UNTIL: we use endDate at 23:59:59 UTC to be safe and inclusive
       let untilUtc = new Date(Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 23, 59, 59));
-      //add an extra day to UNTIL to ensure inclusion of endDate occurrences
-      untilUtc.setUTCDate(untilUtc.getUTCDate() + 1); // adds 1 day
       // Build description and location
       const location = parsed.location || '';
       const descriptionParts = [

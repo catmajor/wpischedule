@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useRef } from 'react';
+import { useState, useRef, ReactElement } from 'react';
 import * as XLSX from 'xlsx';
 import createICSFromExcel from "@/lib/generate-ics"
+import correctButtonImage from "../images/correct-button.png";
 
 interface ConversionStatus {
   type: 'idle' | 'loading' | 'success' | 'error';
-  message?: string;
+  message?: ReactElement<any, any>;
 }
 
 export default function SpreadsheetConverter() {
@@ -28,7 +29,7 @@ export default function SpreadsheetConverter() {
         setFile(selectedFile);
         setStatus({ type: 'idle' });
       } else {
-        setStatus({ type: 'error', message: 'Please select a valid Excel file (.xlsx or .xls)' });
+        setStatus({ type: 'error', message: <>Please select a valid Excel file (.xlsx or .xls)</> });
       }
     }
   };
@@ -36,7 +37,7 @@ export default function SpreadsheetConverter() {
   const convertToICS = async () => {
     if (!file) return;
 
-    setStatus({ type: 'loading', message: 'Converting spreadsheet...' });
+    setStatus({ type: 'loading', message: <>Converting spreadsheet...</> });
 
     try {
       const data = await file.arrayBuffer();
@@ -49,10 +50,13 @@ export default function SpreadsheetConverter() {
 
       const blob = new Blob([icsContent], { type: 'text/calendar' });
       setIcsContent(blob);
-         setStatus({ type: 'success', message: 'Calendar file downloaded successfully!' });
+         setStatus({ type: 'success', message: <>'Calendar file downloaded successfully!'</> });
     } catch (error) {
       console.error('Conversion error:', error);
-      setStatus({ type: 'error', message: 'Failed to convert file. Please check the format.' });
+      setStatus({ type: 'error', message: <>
+                <span>Failed to convert file. Please check the format. Make sure to use the download at the <b>top</b> in the <b>blue</b> header</span>
+                <span><img src={correctButtonImage.src} alt="Correct Download Button" style={{ width: '100%', verticalAlign: 'middle' }} /></span>
+                </> });
     }
   };
 
